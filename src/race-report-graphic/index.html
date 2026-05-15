@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Race Report Graphic — FDL Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,700&family=Roboto+Condensed:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../theme.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <nav class="topnav">
+    <a href="../../index.html" class="home-btn">FDL Tools</a>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <header class="pg-header">
+      <div class="pg-header__label">FDL RACE REPORT GENERATOR</div>
+    </header>
+
+    <!-- Card 1: Graphic Details -->
+    <div class="gc-card">
+      <div class="gc-section-label">GRAPHIC DETAILS</div>
+
+      <div class="row-round-track">
+        <div class="fg">
+          <label class="label" for="round-number">Round #</label>
+          <input type="number" id="round-number" class="input-field" min="1" max="20" value="1">
+        </div>
+        <div class="fg">
+          <label class="label" for="track-name">Track Name</label>
+          <input type="text" id="track-name" class="input-field" placeholder="e.g. Watkins Glen">
+        </div>
+      </div>
+
+      <div class="fg mt-14">
+        <label class="label">Round Type</label>
+        <div class="toggle-btns">
+          <button class="toggle-btn toggle-btn--active" data-round="standard">Standard Race</button>
+          <button class="toggle-btn" data-round="sprint">Sprint Round</button>
+        </div>
+      </div>
+
+      <div class="fg mt-14" id="sprint-type-row" style="display:none">
+        <label class="label">Sprint Report Type</label>
+        <div class="toggle-btns">
+          <button class="toggle-btn toggle-btn--active" data-sprint="sprint">Sprint Race</button>
+          <button class="toggle-btn" data-sprint="feature">Feature Race</button>
+        </div>
+      </div>
+
+      <div class="fg mt-14">
+        <label class="label" for="silver-driver">Silver Class Winner (driver ID)</label>
+        <input type="text" id="silver-driver" class="input-field" placeholder="e.g. 940593 — leave blank if none">
+      </div>
+
+      <div class="fg mt-14">
+        <label class="label" for="race-data">Race Data (paste from spreadsheet)</label>
+        <textarea id="race-data" class="input-field race-paste" rows="6" placeholder="Paste tab-separated race data here (include header row)..."></textarea>
+      </div>
+
+      <button class="generate-btn mt-14" id="generate-btn">GENERATE GRAPHIC</button>
+    </div>
+
+    <!-- Card 2: Export -->
+    <div class="gc-card" id="export-card" style="display:none">
+      <div class="gc-section-label">EXPORT</div>
+
+      <div class="graphic-wrap">
+        <div id="graphic">
+          <div class="bg-photo" id="bg-photo"></div>
+          <div class="bg-overlay"></div>
+          <div class="bg-vignette"></div>
+          <div class="g-content">
+            <img class="g-logo" id="g-logo" alt="FDL">
+            <div class="g-round-title" id="g-round-title"></div>
+            <div class="g-subtitle" id="g-subtitle"></div>
+            <div class="g-table-wrap" id="g-table"></div>
+            <div class="g-footer">
+              <img class="g-footer__logo" id="logo-gripline" alt="Gripline">
+              <img class="g-footer__logo" id="logo-es" alt="Everything Simulated">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="export-btns">
+        <button class="export-btn export-btn--primary" id="download-btn">Download JPG</button>
+        <button class="export-btn" id="copy-btn">Copy to Clipboard</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="./index.js"></script>
+</body>
+</html>

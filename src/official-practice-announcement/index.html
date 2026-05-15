@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Practice Announcement — FDL Tools</title>
+  <link rel="stylesheet" href="../../theme.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <nav class="topnav">
+    <a href="../../index.html" class="home-btn">FDL Tools</a>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <header class="page-header">
+      <div class="page-header__label">SFL Discord Template Builder</div>
+      <h1 class="page-header__title">Practice Session Post</h1>
+    </header>
+
+    <!-- Card 1: Session Details -->
+    <div class="card">
+      <div class="section-title">SESSION DETAILS</div>
+
+      <div class="grid-round-track">
+        <div class="form-group">
+          <label class="label" for="round-number">Round #</label>
+          <input type="number" id="round-number" class="input-field" min="1" max="20">
+        </div>
+        <div class="form-group">
+          <label class="label" for="track-name">Track Name</label>
+          <input type="text" id="track-name" class="input-field" placeholder="e.g. Virginia">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Country Flag</label>
+        <div class="flag-dropdown" id="flag-dropdown">
+          <div class="flag-trigger" id="flag-trigger" tabindex="0" role="button" aria-haspopup="listbox">
+            <span class="flag-trigger__code" id="flag-trigger-code"></span>
+            <span class="flag-trigger__name" id="flag-trigger-name"></span>
+            <span class="flag-trigger__chevron" aria-hidden="true">▼</span>
+          </div>
+          <div class="flag-panel" id="flag-panel" role="listbox">
+            <input type="text" class="flag-search" id="flag-search" placeholder="Search country..." autocomplete="off">
+            <div class="flag-list" id="flag-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="session-date">Session Date (Sydney time)</label>
+        <input type="date" id="session-date" class="input-field">
+      </div>
+
+      <div class="grid-times">
+        <div class="form-group">
+          <label class="label" for="start-time">Start Time (Sydney)</label>
+          <select id="start-time" class="select-field"></select>
+        </div>
+        <div class="form-group">
+          <label class="label" for="end-time">End Time (Sydney)</label>
+          <select id="end-time" class="select-field"></select>
+        </div>
+      </div>
+
+      <div class="info-bar">
+        Duration: <span id="info-duration"></span>
+        &nbsp;·&nbsp;
+        Start unix: <span id="info-start-unix"></span>
+        &nbsp;·&nbsp;
+        End unix: <span id="info-end-unix"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="body-text">Track Conditions Text</label>
+        <textarea id="body-text" class="input-field" rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- Card 2: Discord Preview -->
+    <div class="card">
+      <div class="section-title">DISCORD PREVIEW</div>
+      <div class="preview-box" id="preview-box"></div>
+    </div>
+
+    <!-- Card 3: Raw Output -->
+    <div class="card">
+      <div class="section-title">RAW DISCORD OUTPUT</div>
+      <div class="raw-output" id="raw-output"></div>
+      <button class="copy-btn" id="copy-btn">Copy to Clipboard</button>
+    </div>
+
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+</html>

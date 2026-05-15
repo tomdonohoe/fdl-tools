@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FDL Tools</title>
+  <link rel="stylesheet" href="./theme.css">
+  <style>
+    .home-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Hero ────────────────────────────────────────── */
+    .hero {
+      padding: var(--space-xl) var(--space-lg);
+      border-bottom: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .hero__logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: var(--space-lg);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero__title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero__title span {
+      color: var(--color-accent);
+    }
+
+    .hero__subtitle {
+      font-size: var(--text-base);
+      color: var(--color-text-muted);
+    }
+
+    /* ── Tool grid ───────────────────────────────────── */
+    .tools-section {
+      flex: 1;
+      padding: var(--space-xl) var(--space-lg);
+    }
+
+    .tools-section__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-lg);
+      text-align: center;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-md);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--color-accent);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .tool-card:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+    }
+
+    .tool-card:hover::before {
+      opacity: 1;
+    }
+
+    .tool-card__icon {
+      font-size: 2rem;
+      margin-bottom: var(--space-md);
+      line-height: 1;
+    }
+
+    .tool-card__name {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: var(--space-sm);
+    }
+
+    .tool-card__desc {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .tool-card__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-accent);
+      letter-spacing: 0.05em;
+    }
+
+    .tool-card__cta::after {
+      content: '→';
+      transition: transform 0.15s;
+    }
+
+    .tool-card:hover .tool-card__cta::after {
+      transform: translateX(4px);
+    }
+
+    /* ── Footer ──────────────────────────────────────── */
+    .footer {
+      padding: var(--space-lg);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .footer__sponsor {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      opacity: 0.45;
+      transition: opacity 0.15s;
+    }
+
+    .footer__sponsor:hover {
+      opacity: 0.7;
+    }
+
+    .footer__sponsor img {
+      height: 24px;
+      width: auto;
+      filter: grayscale(1) brightness(2);
+    }
+
+    .footer__sponsor span {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="home-wrapper">
+
+    <section class="hero">
+      <img class="hero__logo" src="./assets/logos/white-fdl-logo.png" alt="FDL logo">
+      <h1 class="hero__title">FDL <span>Tools</span></h1>
+      <p class="hero__subtitle">League management tools for the SFL Championship</p>
+    </section>
+
+    <section class="tools-section">
+      <p class="tools-section__label">Available Tools</p>
+      <div class="tools-grid">
+
+        <a class="tool-card" href="./src/official-practice-announcement/index.html">
+          <div class="tool-card__icon">📢</div>
+          <div class="tool-card__name">Official Practice Announcement</div>
+          <p class="tool-card__desc">
+            Generate a formatted Discord post for official practice sessions.
+            Set the round, track, country flag, session times, and copy straight to clipboard.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/race-week-briefing/index.html">
+          <div class="tool-card__icon">🏁</div>
+          <div class="tool-card__name">Race Week Briefing</div>
+          <p class="tool-card__desc">
+            Build a complete race week Discord announcement. Configure format, schedule,
+            fuel rules, setup files, and weather — with live post preview and one-click copy.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/iracing-results-converter/index.html">
+          <div class="tool-card__icon">📊</div>
+          <div class="tool-card__name">iRacing Results Converter</div>
+          <p class="tool-card__desc">
+            Convert an iRacing race result CSV into tab-separated data ready to paste into
+            Google Sheets. Highlights fastest lap and pole position automatically.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/race-report-graphic/index.html">
+          <div class="tool-card__icon">🏎️</div>
+          <div class="tool-card__name">Race Report Graphic</div>
+          <p class="tool-card__desc">
+            Generate a race result graphic from pasted spreadsheet data.
+            Supports standard and sprint rounds, penalty badges, silver class winner highlighting, and JPG export.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/standings-graphic/index.html">
+          <div class="tool-card__icon">🏆</div>
+          <div class="tool-card__name">Standings Graphic</div>
+          <p class="tool-card__desc">
+            Generate a standings graphic from pasted spreadsheet data.
+            Choose between total or drop points, set a cut line, and export as JPG.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/fuel-calculator/index.html">
+          <div class="tool-card__icon">⛽</div>
+          <div class="tool-card__name">Fuel Calculator</div>
+          <p class="tool-card__desc">
+            Calculate starting fuel and fuel restriction percentage for 1-stop or 2-stop races.
+            Enter fuel per lap, tank capacity, lap time, and race duration.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/driver-briefing/index.html">
+          <div class="tool-card__icon">📋</div>
+          <div class="tool-card__name">Driver Briefing</div>
+          <p class="tool-card__desc">
+            Generate a formatted Discord driver briefing post. Add custom warnings,
+            then export the complete briefing including VSC, Race Control, and radio procedures.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+        <a class="tool-card" href="./src/classification-graphic/index.html">
+          <div class="tool-card__icon">🖼️</div>
+          <div class="tool-card__name">Classification Graphic</div>
+          <p class="tool-card__desc">
+            Generate an 800×800px race classification graphic from an iRacing CSV.
+            Shows top 10 with P1 highlight, DNF badges, and gap formatting — export as JPG or copy to clipboard.
+          </p>
+          <span class="tool-card__cta">Open tool</span>
+        </a>
+
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__sponsor">
+        <img src="./assets/logos/gripline-logo.png" alt="Gripline">
+      </div>
+      <div class="footer__sponsor">
+        <img src="./assets/logos/everything-simulated-logo.webp" alt="Everything Simulated">
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

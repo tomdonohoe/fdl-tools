@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuel Calculator — FDL Tools</title>
+  <link rel="stylesheet" href="../../theme.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <nav class="topnav">
+    <a href="../../index.html" class="home-btn">FDL Tools</a>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <header class="page-header">
+      <div class="page-header__label">Race Strategy Tools</div>
+      <h1 class="page-header__title">Fuel Calculator</h1>
+    </header>
+
+    <!-- Card 1: Inputs -->
+    <div class="card">
+      <div class="section-title">RACE PARAMETERS</div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="label" for="fuel-per-lap">Fuel Per Lap (L)</label>
+          <input type="number" id="fuel-per-lap" class="input-field" step="0.01" min="0.1" placeholder="e.g. 1.31">
+        </div>
+        <div class="form-group">
+          <label class="label" for="tank-capacity">Tank Capacity (L)</label>
+          <input type="number" id="tank-capacity" class="input-field" step="0.1" min="1" placeholder="e.g. 46">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="label" for="lap-time">Lap Time (m:ss.ms)</label>
+          <input type="text" id="lap-time" class="input-field" placeholder="e.g. 1:31.500">
+          <span class="field-hint" id="lap-time-hint"></span>
+        </div>
+        <div class="form-group">
+          <label class="label" for="race-duration">Race Duration (mins)</label>
+          <input type="number" id="race-duration" class="input-field" step="1" min="1" placeholder="e.g. 45">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Stop Strategy</label>
+        <div class="toggle-btns">
+          <button class="toggle-btn toggle-btn--active" data-stops="1">1 Stop</button>
+          <button class="toggle-btn" data-stops="2">2 Stop</button>
+        </div>
+      </div>
+
+      <div id="error-msg" class="error-msg" style="display:none"></div>
+
+      <button class="calc-btn" id="calc-btn">CALCULATE</button>
+    </div>
+
+    <!-- Card 2: Results -->
+    <div class="card" id="results-card" style="display:none">
+      <div class="section-title">RESULTS</div>
+
+      <!-- Race overview -->
+      <div class="result-group">
+        <div class="result-row">
+          <span class="result-label">Total Laps</span>
+          <span class="result-value" id="r-laps"></span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Total Fuel Needed</span>
+          <span class="result-value" id="r-total-fuel"></span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Lap 1 Refuel (if needed)</span>
+          <span class="result-value" id="r-lap1-refuel"></span>
+        </div>
+      </div>
+
+      <!-- Key setup values -->
+      <div class="highlight-row">
+        <div class="highlight-card">
+          <div class="highlight-card__label">Starting Fuel</div>
+          <div class="highlight-card__value" id="r-starting-fuel"></div>
+          <div class="highlight-card__adj">
+            <button class="adj-btn" id="sf-minus">−0.5L</button>
+            <button class="adj-btn" id="sf-plus">+0.5L</button>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-card__label">Fuel Restriction</div>
+          <div class="highlight-card__value" id="r-restriction-pct"></div>
+          <div class="highlight-card__sub" id="r-restriction-amount"></div>
+          <div class="highlight-card__adj">
+            <button class="adj-btn" id="rp-minus">−1%</button>
+            <button class="adj-btn" id="rp-plus">+1%</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pit strategy -->
+      <div class="section-title" style="margin-top: var(--space-lg)">PIT STRATEGY</div>
+      <div id="r-pits" class="pit-list"></div>
+
+      <!-- Stint breakdown -->
+      <div class="section-title" style="margin-top: var(--space-lg)">STINT BREAKDOWN</div>
+      <div id="r-stints" class="stint-list"></div>
+    </div>
+
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+</html>

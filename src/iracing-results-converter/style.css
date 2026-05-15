@@ -1,0 +1,189 @@
+.page-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.page-header {
+  padding: var(--space-md) 0 var(--space-sm);
+}
+
+.page-header__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+.page-header__title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+}
+
+/* ── Drop zone ────────────────────────────────── */
+.drop-zone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: var(--color-surface-2);
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+  border-color: var(--color-accent);
+  background: #0f1a08;
+}
+
+.drop-zone__icon {
+  font-size: 2.4rem;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.drop-zone__title {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.drop-zone__hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.drop-zone__hint span {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* ── Highlight cards ──────────────────────────── */
+.highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.highlight-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.highlight-card__badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+.highlight-card__value {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1.2;
+}
+
+.highlight-card__sub {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ── Output area ──────────────────────────────── */
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.output-meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.output-meta span {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.output-textarea {
+  width: 100%;
+  min-height: 320px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.75;
+  padding: var(--space-md) var(--space-lg);
+  resize: vertical;
+  outline: none;
+}
+
+.output-textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.copy-btn {
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #000;
+  cursor: pointer;
+  font-family: var(--font-base);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: 6px var(--space-md);
+  transition: background 0.15s;
+}
+
+.copy-btn:hover    { background: var(--color-accent-hover); }
+.copy-btn.success  { background: var(--color-success); color: #000; }
+.copy-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Error bar ────────────────────────────────── */
+.error-bar {
+  background: #3d1a1a;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+  padding: var(--space-sm) var(--space-md);
+  display: none;
+}
+
+.error-bar.visible { display: block; }
+
+/* ── Hidden file input ────────────────────────── */
+#file-input { display: none; }
+
+/* ── Hidden until results loaded ─────────────── */
+.results-section         { display: none; }
+.results-section.visible { display: block; }

@@ -13,6 +13,7 @@ let csvRows      = [];
 let selectedFlag;
 let flagDropdownOpen = false;
 let flagSearch       = '';
+let subsessionId     = '';
 
 const FLAG_EMOJIS = [
   { code: "🇦🇺", name: "Australia",     search: "australia" },
@@ -414,11 +415,6 @@ function renderFlagList() {
       flagDropdownOpen = false;
       renderFlagDropdown();
     }
-  });
-
-  flagSel.addEventListener('change', e => {
-    selectedFlag.code = FLAG_EMOJIS[parseInt(e.target.value, 10)].code;
-    render();
   });
 
   document.getElementById('subsession-id').addEventListener('input', e => {

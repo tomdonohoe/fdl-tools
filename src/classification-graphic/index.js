@@ -108,6 +108,7 @@ function parseCSV(text) {
   const LAPS    = col('Laps Comp');
   const OUT     = col('Out');
   const INC     = col('Inc');
+  const CUST_ID = col('Cust ID');
 
   if (FIN_POS === -1 || NAME === -1) throw new Error('Required columns missing. Is this an iRacing results CSV?');
 
@@ -116,14 +117,23 @@ function parseCSV(text) {
     const row = splitCSVLine(lines[i]);
     const finPos = parseInt(row[FIN_POS], 10);
     if (isNaN(finPos)) continue;
+    const driverName  = row[NAME] || '';
+    const custId      = CUST_ID !== -1 ? parseInt(row[CUST_ID], 10) : null;
+    const driverEntry = (typeof FDL_DRIVERS !== 'undefined')
+      ? (custId ? FDL_DRIVERS.find(d => d.id === custId)
+                : FDL_DRIVERS.find(d => d.driver.toLowerCase() === driverName.toLowerCase()))
+      : null;
     rows.push({
       finPos,
-      name:           row[NAME]  || '',
+      name:           driverName,
       interval:       row[INTV]  || '',
       fastestLapTime: row[FAST]  || '',
       laps:           row[LAPS]  || '',
       out:            row[OUT]   || '',
       inc:            row[INC]   || '0',
+      team:     driverEntry ? driverEntry.team   : '',
+      teamId:   driverEntry ? driverEntry.teamId : null,
+      class:    driverEntry ? driverEntry.class  : '',
     });
   }
   if (!rows.length) throw new Error('No result rows found after the header.');
@@ -194,16 +204,36 @@ function buildTable(top10, type) {
   if (isRace) h += '<th style="text-align:right;min-width:46px">INC</th>';
   h += '</tr></thead><tbody>';
 
-  top10.forEach((d, i) => {
-    const isP1  = i === 0;
-    const isDNF = d.out !== 'Running';
-    const gap   = formatGap(d, i, p1, type);
-    const inc   = parseInt(d.inc, 10) || 0;
+  const silverRanks = new Map();
+  top10.filter(d => d.class === 'SILVER').slice(0, 3).forEach((d, i) => {
+    silverRanks.set(d.name, i + 1);
+  });
 
-    const rowCls = isP1 ? 'g-row-p1' : isDNF ? 'g-row-dnf' : '';
-    const nameTxt = isDNF ? `${d.name} <span class="dnf-badge">DNF</span>` : d.name;
-    const gapCls  = isP1 ? '' : 'g-gap';
-    const incCls  = inc > 0 ? 'g-inc-hot' : '';
+  top10.forEach((d, i) => {
+    const isP1       = i === 0;
+    const isDNF      = d.out !== 'Running';
+    const gap        = formatGap(d, i, p1, type);
+    const inc        = parseInt(d.inc, 10) || 0;
+    const silverRank = silverRanks.get(d.name) || 0;
+
+    let rowCls = isP1 ? 'g-row-p1' : isDNF ? 'g-row-dnf' : '';
+    if (!rowCls) {
+      if (silverRank === 1) rowCls = 'g-row-silver';
+      else if (silverRank === 2) rowCls = 'g-row-silver-2';
+      else if (silverRank === 3) rowCls = 'g-row-silver-3';
+    }
+
+    const badge = silverRank === 1 ? ' <span class="silver-badge">🥇</span>'
+      : silverRank === 2 ? ' <span class="silver-badge">🥈</span>'
+      : silverRank === 3 ? ' <span class="silver-badge">🥉</span>'
+      : '';
+    const teamLabel = d.teamId ? d.teamId : (d.team || '');
+    const meta      = teamLabel ? ` <span class="driver-meta">${teamLabel}${d.class ? ' · ' + d.class : ''}</span>` : '';
+    const nameTxt   = isDNF
+      ? `${d.name} <span class="dnf-badge">DNF</span>${badge}${meta}`
+      : `${d.name}${badge}${meta}`;
+    const gapCls    = isP1 ? '' : 'g-gap';
+    const incCls    = inc > 0 ? 'g-inc-hot' : '';
 
     h += `<tr class="${rowCls}">`;
     h += `<td>${d.displayPos}</td>`;

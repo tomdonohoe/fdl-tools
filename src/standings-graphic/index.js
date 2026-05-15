@@ -9,7 +9,7 @@ let roundNumber = 5;
 let seasonName  = 'SFL Championship · FDL Season 6';
 let pointsType  = 'drop';
 let cutAfter    = 13;
-let cutLabel    = 'ADWN Cut';
+let cutLabel    = 'AOWN Cut';
 let drivers     = [];
 
 // ── Parse standings (TSV paste) ─────────────────────────────────
@@ -20,11 +20,18 @@ function parseStandings(text) {
     const cols = line.split('\t');
     const pos = parseInt(cols[0], 10);
     if (isNaN(pos) || pos < 1) continue;
+    const driverName = (cols[2] || '').trim();
+    const entry = (typeof FDL_DRIVERS !== 'undefined')
+      ? FDL_DRIVERS.find(d => d.driver.toLowerCase() === driverName.toLowerCase())
+      : null;
     rows.push({
       pos,
-      driver:      (cols[2] || '').trim(),
+      driver:      driverName,
       pointsTotal: parseInt(cols[6], 10) || 0,
       pointsDrop:  parseInt(cols[7], 10) || 0,
+      team:   entry ? entry.team   : '',
+      teamId: entry ? entry.teamId : null,
+      class:  entry ? entry.class  : '',
     });
   }
   return rows;
@@ -44,6 +51,11 @@ function buildTable(drivers, type, cutAfter, cutLabel) {
 
   const posClass = ['', 'g-row-p1', 'g-row-p2', 'g-row-p3'];
 
+  const silverRanks = new Map();
+  sorted.filter(d => d.class === 'SILVER').slice(0, 3).forEach((d, i) => {
+    silverRanks.set(d.driver, i + 1);
+  });
+
   let h = '<thead><tr>';
   h += '<th></th>';
   h += '<th style="text-align:left">DRIVER</th>';
@@ -51,11 +63,23 @@ function buildTable(drivers, type, cutAfter, cutLabel) {
   h += '</tr></thead><tbody>';
 
   sorted.forEach(d => {
-    const cls = d.displayPos <= 3 ? posClass[d.displayPos] : '';
+    const silverRank = silverRanks.get(d.driver) || 0;
+    let cls = d.displayPos <= 3 ? posClass[d.displayPos] : '';
+    if (!cls) {
+      if (silverRank === 1) cls = 'g-row-silver';
+      else if (silverRank === 2) cls = 'g-row-silver-2';
+      else if (silverRank === 3) cls = 'g-row-silver-3';
+    }
     const pts = type === 'total' ? d.pointsTotal : d.pointsDrop;
+    const badge = silverRank === 1 ? ' <span class="silver-badge">🥇</span>'
+      : silverRank === 2 ? ' <span class="silver-badge">🥈</span>'
+      : silverRank === 3 ? ' <span class="silver-badge">🥉</span>'
+      : '';
+    const teamLabel = d.teamId ? d.teamId : (d.team || '');
+    const meta = teamLabel ? ` <span class="driver-meta">${teamLabel}${d.class ? ' · ' + d.class : ''}</span>` : '';
     h += `<tr class="${cls}">`;
     h += `<td>${d.displayPos}</td>`;
-    h += `<td>${d.driver}</td>`;
+    h += `<td>${d.driver}${badge}${meta}</td>`;
     h += `<td>${pts}</td>`;
     h += '</tr>';
 

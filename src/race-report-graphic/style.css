@@ -326,6 +326,18 @@ body {
 }
 .g-row-silver td { color: #ffffff !important; font-weight: 700; }
 
+.g-row-silver-2 {
+  border-left: 3px solid rgba(210,210,210,0.55) !important;
+  background: linear-gradient(90deg, rgba(210,210,210,0.10) 0%, rgba(210,210,210,0.01) 100%);
+}
+.g-row-silver-2 td { color: rgba(255,255,255,0.75) !important; font-weight: 600; }
+
+.g-row-silver-3 {
+  border-left: 3px solid rgba(210,210,210,0.35) !important;
+  background: linear-gradient(90deg, rgba(210,210,210,0.06) 0%, rgba(210,210,210,0.01) 100%);
+}
+.g-row-silver-3 td { color: rgba(255,255,255,0.55) !important; font-weight: 600; }
+
 /* ── Silver badge ─────────────────────────────── */
 .silver-badge {
   display: inline-block;
@@ -340,6 +352,17 @@ body {
   font-weight: 700;
   letter-spacing: 0.05em;
 }
+
+/* ── Driver meta (team · class) ───────────────── */
+.driver-meta {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.46rem;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
 
 /* ── Penalty badge ────────────────────────────── */
 .pen-badge {

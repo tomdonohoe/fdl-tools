@@ -8,7 +8,6 @@ let roundNumber  = 1;
 let trackName    = '';
 let roundType    = 'standard';   // 'standard' | 'sprint'
 let sprintType   = 'sprint';     // 'sprint' | 'feature'
-let silverDriver = '';           // driver name to highlight as silver class winner
 let drivers      = [];
 
 // ── Parse race data (TSV paste) ──────────────────────────────────
@@ -47,53 +46,76 @@ function parseRaceData(text) {
     const penSecs  = parseFloat(penRaw) || 0;
     const postInt  = (c[col('post race int')] || '').trim();
     const intRaw   = (postInt && postInt !== '-') ? postInt : (c[col('interval (s)')] || '').trim();
+    const rawId      = c[col('id')] || '';
+    const driverEntry = (typeof FDL_DRIVERS !== 'undefined')
+      ? FDL_DRIVERS.find(d => d.id === parseInt(rawId, 10))
+      : null;
     rows.push({
       pos,
-      id:       c[col('id')] || '',
+      id:       rawId,
       driver:   c[col('driver')] || '',
       interval: intRaw,
       penSecs,
+      team:     driverEntry ? driverEntry.team   : '',
+      teamId:   driverEntry ? driverEntry.teamId : null,
+      class:    driverEntry ? driverEntry.class  : '',
     });
   }
   rows.sort((a, b) => a.pos - b.pos);
   return rows;
 }
 
+// ── Silver winner auto-detection ─────────────────────────────────
+function findTopSilver(rows) {
+  return rows
+    .filter(d => d.class === 'SILVER')
+    .sort((a, b) => a.pos - b.pos)
+    .slice(0, 3)
+    .map(d => String(d.id));
+}
+
 // ── Table HTML ───────────────────────────────────────────────────
-function buildRow(d, silverName) {
-  const isP1     = d.pos === 1;
-  const isP2     = d.pos === 2;
-  const isP3     = d.pos === 3;
-  const silverVal = silverName ? silverName.trim() : '';
-  const isSilver  = silverVal !== '' && (d.id === silverVal || d.driver.trim().toLowerCase() === silverVal.toLowerCase());
+function buildRow(d, silverIds) {
+  const isP1 = d.pos === 1;
+  const isP2 = d.pos === 2;
+  const isP3 = d.pos === 3;
+  const silverRank = silverIds ? silverIds.indexOf(d.id) + 1 : 0; // 1/2/3 or 0
 
   let rowCls = '';
-  if (isSilver && !isP1) rowCls = 'g-row-silver';
-  else if (isP1) rowCls = 'g-row-p1';
+  if (isP1) rowCls = 'g-row-p1';
   else if (isP2) rowCls = 'g-row-p2';
   else if (isP3) rowCls = 'g-row-p3';
+  else if (silverRank === 1) rowCls = 'g-row-silver';
+  else if (silverRank === 2) rowCls = 'g-row-silver-2';
+  else if (silverRank === 3) rowCls = 'g-row-silver-3';
 
   const penBadge = d.penSecs > 0
     ? `<span class="pen-badge">+${d.penSecs}s</span>`
     : '';
 
-  const silverLabel = isSilver ? ' <span class="silver-badge">🏆 S</span>' : '';
+  const silverBadge = silverRank === 1 ? ' <span class="silver-badge">🥇</span>'
+    : silverRank === 2 ? ' <span class="silver-badge">🥈</span>'
+    : silverRank === 3 ? ' <span class="silver-badge">🥉</span>'
+    : '';
 
-  return `<tr class="${rowCls}"><td>${d.pos}</td><td>${d.driver}${silverLabel}${penBadge}</td><td>${formatInterval(d.interval)}</td></tr>`;
+  const teamLabel = d.teamId ? d.teamId : (d.team || '');
+  const meta      = teamLabel ? ` <span class="driver-meta">${teamLabel}${d.class ? ' · ' + d.class : ''}</span>` : '';
+
+  return `<tr class="${rowCls}"><td>${d.pos}</td><td>${d.driver}${silverBadge}${penBadge}${meta}</td><td>${formatInterval(d.interval)}</td></tr>`;
 }
 
-function buildHalfTable(rows, silverName) {
+function buildHalfTable(rows, silverIds) {
   let h = '<thead><tr><th></th><th>DRIVER</th><th>INT</th></tr></thead><tbody>';
-  rows.forEach(d => { h += buildRow(d, silverName); });
+  rows.forEach(d => { h += buildRow(d, silverIds); });
   return h + '</tbody>';
 }
 
-function buildTable(drivers, silverName) {
+function buildTable(drivers, silverIds) {
   if (!drivers.length) return '';
   const half = Math.ceil(drivers.length / 2);
   const left  = drivers.slice(0, half);
   const right = drivers.slice(half);
-  return `<table>${buildHalfTable(left, silverName)}</table><table>${buildHalfTable(right, silverName)}</table>`;
+  return `<table>${buildHalfTable(left, silverIds)}</table><table>${buildHalfTable(right, silverIds)}</table>`;
 }
 
 function formatInterval(raw) {
@@ -122,7 +144,7 @@ function render() {
   const title = buildTitle();
   document.getElementById('g-round-title').textContent = `Round ${roundNumber} ${title}`;
   document.getElementById('g-subtitle').textContent    = trackName ? trackName.toUpperCase() : '';
-  document.getElementById('g-table').innerHTML = buildTable(drivers, silverDriver);
+  document.getElementById('g-table').innerHTML = buildTable(drivers, findTopSilver(drivers));
 }
 
 // ── Export ───────────────────────────────────────────────────────
@@ -186,10 +208,7 @@ function copyToClipboard() {
     render();
   });
 
-  document.getElementById('silver-driver').addEventListener('input', e => {
-    silverDriver = e.target.value;
-    render();
-  });
+
 
   // Round type toggle
   document.querySelectorAll('.toggle-btn[data-round]').forEach(btn => {

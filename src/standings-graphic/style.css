@@ -325,6 +325,50 @@ body {
 }
 .g-row-p3 td { color: rgba(163,255,99,0.55) !important; font-weight: 600; }
 
+/* ── Silver class rows ────────────────────────── */
+.g-row-silver {
+  border-left: 3px solid #d4d4d4 !important;
+  background: linear-gradient(90deg, rgba(210,210,210,0.18) 0%, rgba(210,210,210,0.02) 100%);
+}
+.g-row-silver td { color: #ffffff !important; font-weight: 700; }
+
+.g-row-silver-2 {
+  border-left: 3px solid rgba(210,210,210,0.55) !important;
+  background: linear-gradient(90deg, rgba(210,210,210,0.10) 0%, rgba(210,210,210,0.01) 100%);
+}
+.g-row-silver-2 td { color: rgba(255,255,255,0.75) !important; font-weight: 600; }
+
+.g-row-silver-3 {
+  border-left: 3px solid rgba(210,210,210,0.35) !important;
+  background: linear-gradient(90deg, rgba(210,210,210,0.06) 0%, rgba(210,210,210,0.01) 100%);
+}
+.g-row-silver-3 td { color: rgba(255,255,255,0.55) !important; font-weight: 600; }
+
+/* ── Silver badge ─────────────────────────────── */
+.silver-badge {
+  display: inline-block;
+  background: rgba(210,210,210,0.15);
+  color: #d4d4d4;
+  font-size: 0.5rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 4px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* ── Driver meta (team · class) ───────────────── */
+.driver-meta {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.46rem;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
 /* ── Cut row ──────────────────────────────────── */
 .g-row-cut td {
   padding: 5px 6px;

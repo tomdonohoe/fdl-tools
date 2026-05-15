@@ -53,8 +53,18 @@
 
       <div class="row-flag-session mt-14">
         <div class="fg">
-          <label class="label" for="country-flag">Country Flag</label>
-          <select id="country-flag" class="input-field"></select>
+          <label class="label">Country Flag</label>
+          <div class="flag-dropdown" id="flag-dropdown">
+            <div class="flag-trigger" id="flag-trigger" tabindex="0" role="button" aria-haspopup="listbox">
+              <span class="flag-trigger__code" id="flag-trigger-code"></span>
+              <span class="flag-trigger__name" id="flag-trigger-name"></span>
+              <span class="flag-trigger__chevron" aria-hidden="true">▼</span>
+            </div>
+            <div class="flag-panel" id="flag-panel" role="listbox">
+              <input type="text" class="flag-search" id="flag-search" placeholder="Search country..." autocomplete="off">
+              <div class="flag-list" id="flag-list"></div>
+            </div>
+          </div>
         </div>
         <div class="fg">
           <label class="label" for="subsession-id">Subsession ID</label>

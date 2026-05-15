@@ -392,6 +392,98 @@ body {
 .g-footer__logo:first-child { height: 20px; }
 .g-footer__logo:last-child  { height: 35px; }
 
+/* ── Flag dropdown ────────────────────────────── */
+.flag-dropdown { position: relative; }
+
+.flag-trigger {
+  background: #0e0e0e;
+  border: 1px solid #2c2c2c;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  user-select: none;
+}
+
+.flag-trigger:hover,
+.flag-trigger:focus { border-color: #a3ff63; outline: none; }
+
+.flag-trigger__code    { font-size: 22px; line-height: 1; }
+.flag-trigger__name    { flex: 1; font-size: 0.85rem; color: #ffffff; }
+.flag-trigger__chevron { color: #666666; font-size: 10px; }
+
+.flag-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #161616;
+  border: 1px solid #a3ff63;
+  border-radius: 8px;
+  z-index: 100;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  display: none;
+}
+
+.flag-panel.open { display: block; }
+
+.flag-search {
+  background: #0e0e0e;
+  border: none;
+  border-bottom: 1px solid #2c2c2c;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  width: 100%;
+  outline: none;
+}
+
+.flag-list { max-height: 200px; overflow-y: auto; }
+
+.flag-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.flag-item:hover      { background: #1e1e1e; }
+.flag-item--active    { background: #1e1e1e; color: #a3ff63; }
+.flag-item__code      { font-size: 20px; line-height: 1; }
+
+.flag-no-results {
+  padding: 12px;
+  color: #666666;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ── Discord text output ──────────────────────── */
+.discord-textarea {
+  width: 100%;
+  background: #0e0e0e;
+  border: 1px solid #2c2c2c;
+  border-radius: 6px;
+  color: #cccccc;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  padding: 12px;
+  resize: none;
+  outline: none;
+  min-height: 80px;
+}
+
+.export-btn.success { background: #a3ff63; border-color: #a3ff63; color: #0a0a0a; }
+
 /* ── Responsive ───────────────────────────────── */
 @media (max-width: 520px) {
   .row-round-track { grid-template-columns: 1fr; }

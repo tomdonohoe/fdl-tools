@@ -8,6 +8,60 @@ let roundNumber  = 1;
 let trackName    = '';
 let roundType    = 'standard';   // 'standard' | 'sprint'
 let sprintType   = 'sprint';     // 'sprint' | 'feature'
+let selectedFlag;
+let flagDropdownOpen = false;
+let flagSearch       = '';
+
+const FLAG_EMOJIS = [
+  { code: "🇦🇺", name: "Australia",     search: "australia" },
+  { code: "🇺🇸", name: "United States", search: "united states usa america" },
+  { code: "🇬🇧", name: "United Kingdom",search: "united kingdom uk britain england" },
+  { code: "🇩🇪", name: "Germany",       search: "germany" },
+  { code: "🇫🇷", name: "France",        search: "france" },
+  { code: "🇮🇹", name: "Italy",         search: "italy" },
+  { code: "🇯🇵", name: "Japan",         search: "japan" },
+  { code: "🇨🇦", name: "Canada",        search: "canada" },
+  { code: "🇧🇷", name: "Brazil",        search: "brazil" },
+  { code: "🇲🇽", name: "Mexico",        search: "mexico" },
+  { code: "🇪🇸", name: "Spain",         search: "spain" },
+  { code: "🇳🇱", name: "Netherlands",   search: "netherlands holland" },
+  { code: "🇧🇪", name: "Belgium",       search: "belgium" },
+  { code: "🇦🇹", name: "Austria",       search: "austria" },
+  { code: "🇵🇹", name: "Portugal",      search: "portugal" },
+  { code: "🇨🇭", name: "Switzerland",   search: "switzerland" },
+  { code: "🇸🇪", name: "Sweden",        search: "sweden" },
+  { code: "🇳🇴", name: "Norway",        search: "norway" },
+  { code: "🇩🇰", name: "Denmark",       search: "denmark" },
+  { code: "🇫🇮", name: "Finland",       search: "finland" },
+  { code: "🇵🇱", name: "Poland",        search: "poland" },
+  { code: "🇨🇿", name: "Czech Republic",search: "czech republic czechia" },
+  { code: "🇭🇺", name: "Hungary",       search: "hungary" },
+  { code: "🇷🇴", name: "Romania",       search: "romania" },
+  { code: "🇷🇺", name: "Russia",        search: "russia" },
+  { code: "🇨🇳", name: "China",         search: "china" },
+  { code: "🇰🇷", name: "South Korea",   search: "south korea" },
+  { code: "🇮🇳", name: "India",         search: "india" },
+  { code: "🇿🇦", name: "South Africa",  search: "south africa" },
+  { code: "🇦🇪", name: "UAE",           search: "uae united arab emirates dubai" },
+  { code: "🇸🇦", name: "Saudi Arabia",  search: "saudi arabia" },
+  { code: "🇸🇬", name: "Singapore",     search: "singapore" },
+  { code: "🇳🇿", name: "New Zealand",   search: "new zealand" },
+  { code: "🇦🇷", name: "Argentina",     search: "argentina" },
+  { code: "🇨🇱", name: "Chile",         search: "chile" },
+  { code: "🇹🇷", name: "Turkey",        search: "turkey" },
+  { code: "🇬🇷", name: "Greece",        search: "greece" },
+  { code: "🇮🇪", name: "Ireland",       search: "ireland" },
+  { code: "🇲🇨", name: "Monaco",        search: "monaco" },
+  { code: "🇧🇭", name: "Bahrain",       search: "bahrain" },
+  { code: "🇦🇿", name: "Azerbaijan",    search: "azerbaijan baku" },
+  { code: "🇲🇾", name: "Malaysia",      search: "malaysia" },
+  { code: "🇹🇭", name: "Thailand",      search: "thailand" },
+  { code: "🇺🇾", name: "Uruguay",       search: "uruguay" },
+  { code: "🇵🇪", name: "Peru",          search: "peru" },
+  { code: "🇨🇴", name: "Colombia",      search: "colombia" },
+  { code: "🇻🇳", name: "Vietnam",       search: "vietnam" },
+  { code: "🇮🇩", name: "Indonesia",     search: "indonesia" },
+];
 let drivers      = [];
 
 // ── Parse race data (TSV paste) ──────────────────────────────────
@@ -188,6 +242,62 @@ function copyToClipboard() {
   }).catch(err => alert('Export failed: ' + err.message));
 }
 
+// ── Discord text ────────────────────────────────────────────────
+function updateDiscordText() {
+  const rn   = document.getElementById('round-number').value || '?';
+  const tn   = document.getElementById('track-name').value || '?';
+  const text = `**:clipboard: Race Report \u2013 SFL Round ${rn} @ ${tn} ${selectedFlag.code} **\n\nThe results from Round ${rn} at ${tn} are now official!`;
+  const ta   = document.getElementById('discord-text');
+  if (ta) ta.value = text;
+}
+
+// ── Flag dropdown ───────────────────────────────────────────────
+function renderFlagDropdown() {
+  document.getElementById('flag-trigger-code').textContent = selectedFlag.code;
+  document.getElementById('flag-trigger-name').textContent = selectedFlag.name;
+  const panel = document.getElementById('flag-panel');
+  if (flagDropdownOpen) {
+    panel.classList.add('open');
+    renderFlagList();
+  } else {
+    panel.classList.remove('open');
+  }
+}
+
+function renderFlagList() {
+  const list    = document.getElementById('flag-list');
+  const query   = flagSearch.toLowerCase();
+  const filtered = query
+    ? FLAG_EMOJIS.filter(f => f.name.toLowerCase().includes(query) || f.search.includes(query))
+    : FLAG_EMOJIS;
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="flag-no-results">No results</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(f => `
+    <div class="flag-item${f.code === selectedFlag.code ? ' flag-item--active' : ''}" data-idx="${FLAG_EMOJIS.indexOf(f)}" role="option">
+      <span class="flag-item__code">${f.code}</span>
+      <span>${f.name}</span>
+    </div>`).join('');
+
+  list.querySelectorAll('.flag-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.stopPropagation();
+      const flag = FLAG_EMOJIS[parseInt(item.dataset.idx, 10)];
+      if (flag) {
+        selectedFlag     = flag;
+        flagDropdownOpen = false;
+        flagSearch       = '';
+        document.getElementById('flag-search').value = '';
+        renderFlagDropdown();
+        updateDiscordText();
+      }
+    });
+  });
+}
+
 // ── Init ─────────────────────────────────────────────────────────
 (function init() {
   document.getElementById('g-logo').src        = logoDataURL;
@@ -240,9 +350,54 @@ function copyToClipboard() {
     const card = document.getElementById('export-card');
     card.style.display = 'block';
     render();
+    updateDiscordText();
     card.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   document.getElementById('download-btn').addEventListener('click', downloadJPG);
   document.getElementById('copy-btn').addEventListener('click', copyToClipboard);
+
+  // Flag dropdown
+  selectedFlag = FLAG_EMOJIS[0];
+  renderFlagDropdown();
+
+  const flagDropdown = document.getElementById('flag-dropdown');
+  const flagTrigger  = document.getElementById('flag-trigger');
+  const flagSearchEl = document.getElementById('flag-search');
+
+  flagTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    flagDropdownOpen = !flagDropdownOpen;
+    renderFlagDropdown();
+    if (flagDropdownOpen) flagSearchEl.focus();
+  });
+
+  flagSearchEl.addEventListener('click', e => e.stopPropagation());
+
+  flagSearchEl.addEventListener('input', e => {
+    flagSearch = e.target.value;
+    renderFlagList();
+  });
+
+  document.addEventListener('click', e => {
+    if (flagDropdownOpen && !flagDropdown.contains(e.target)) {
+      flagDropdownOpen = false;
+      renderFlagDropdown();
+    }
+  });
+
+  document.getElementById('copy-text-btn').addEventListener('click', () => {
+    const text = document.getElementById('discord-text').value;
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copy-text-btn');
+    btn.textContent = '\u2713 Copied!';
+    btn.classList.add('success');
+    setTimeout(() => { btn.textContent = 'Copy Text'; btn.classList.remove('success'); }, 2000);
+  });
 })();

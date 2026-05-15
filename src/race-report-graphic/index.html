@@ -54,6 +54,21 @@
       </div>
 
       <div class="fg mt-14">
+        <label class="label">Country Flag</label>
+        <div class="flag-dropdown" id="flag-dropdown">
+          <div class="flag-trigger" id="flag-trigger" tabindex="0" role="button" aria-haspopup="listbox">
+            <span class="flag-trigger__code" id="flag-trigger-code"></span>
+            <span class="flag-trigger__name" id="flag-trigger-name"></span>
+            <span class="flag-trigger__chevron" aria-hidden="true">▼</span>
+          </div>
+          <div class="flag-panel" id="flag-panel" role="listbox">
+            <input type="text" class="flag-search" id="flag-search" placeholder="Search country..." autocomplete="off">
+            <div class="flag-list" id="flag-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg mt-14">
         <label class="label" for="race-data">Race Data (paste from spreadsheet)</label>
         <textarea id="race-data" class="input-field race-paste" rows="6" placeholder="Paste tab-separated race data here (include header row)..."></textarea>
       </div>
@@ -87,6 +102,10 @@
         <button class="export-btn export-btn--primary" id="download-btn">Download JPG</button>
         <button class="export-btn" id="copy-btn">Copy to Clipboard</button>
       </div>
+
+      <div class="gc-section-label" style="margin-top:24px">DISCORD TEXT</div>
+      <textarea class="discord-textarea" id="discord-text" spellcheck="false"></textarea>
+      <button class="export-btn export-btn--primary" id="copy-text-btn" style="margin-top:10px">Copy Text</button>
     </div>
 
   </div>

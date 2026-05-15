@@ -191,4 +191,22 @@ function copyToClipboard() {
 
   document.getElementById('download-btn').addEventListener('click', downloadJPG);
   document.getElementById('copy-btn').addEventListener('click', copyToClipboard);
+
+  const discordDefault = `**Gripline SFL Championship** - *Season 6 (2026 S2)*\n:point_right: [Click here to view full standings](https://docs.google.com/spreadsheets/d/1St9EWbUtg1Dorl_XjpGdxPApsS0inq1jSlzQS-IeqWE/edit?usp=sharing) :trophy:`;
+  document.getElementById('discord-text').value = discordDefault;
+
+  document.getElementById('copy-text-btn').addEventListener('click', () => {
+    const text = document.getElementById('discord-text').value;
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copy-text-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('success');
+    setTimeout(() => { btn.textContent = 'Copy Text'; btn.classList.remove('success'); }, 2000);
+  });
 })();

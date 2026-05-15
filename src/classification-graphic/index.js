@@ -10,58 +10,59 @@ let trackName    = 'Watkins Glen';
 let carName      = 'SFL';
 let sessionType  = 'practice';
 let csvRows      = [];
-let countryFlag  = '🇦🇺';
-let subsessionId = '';
+let selectedFlag;
+let flagDropdownOpen = false;
+let flagSearch       = '';
 
 const FLAG_EMOJIS = [
-  { code: '🇦🇺', name: 'Australia' },
-  { code: '🇺🇸', name: 'United States' },
-  { code: '🇬🇧', name: 'United Kingdom' },
-  { code: '🇩🇪', name: 'Germany' },
-  { code: '🇫🇷', name: 'France' },
-  { code: '🇮🇹', name: 'Italy' },
-  { code: '🇯🇵', name: 'Japan' },
-  { code: '🇨🇦', name: 'Canada' },
-  { code: '🇧🇷', name: 'Brazil' },
-  { code: '🇲🇽', name: 'Mexico' },
-  { code: '🇪🇸', name: 'Spain' },
-  { code: '🇳🇱', name: 'Netherlands' },
-  { code: '🇧🇪', name: 'Belgium' },
-  { code: '🇦🇹', name: 'Austria' },
-  { code: '🇵🇹', name: 'Portugal' },
-  { code: '🇨🇭', name: 'Switzerland' },
-  { code: '🇸🇪', name: 'Sweden' },
-  { code: '🇳🇴', name: 'Norway' },
-  { code: '🇩🇰', name: 'Denmark' },
-  { code: '🇫🇮', name: 'Finland' },
-  { code: '🇵🇱', name: 'Poland' },
-  { code: '🇨🇿', name: 'Czech Republic' },
-  { code: '🇭🇺', name: 'Hungary' },
-  { code: '🇷🇴', name: 'Romania' },
-  { code: '🇷🇺', name: 'Russia' },
-  { code: '🇨🇳', name: 'China' },
-  { code: '🇰🇷', name: 'South Korea' },
-  { code: '🇮🇳', name: 'India' },
-  { code: '🇿🇦', name: 'South Africa' },
-  { code: '🇦🇪', name: 'UAE' },
-  { code: '🇸🇦', name: 'Saudi Arabia' },
-  { code: '🇸🇬', name: 'Singapore' },
-  { code: '🇳🇿', name: 'New Zealand' },
-  { code: '🇦🇷', name: 'Argentina' },
-  { code: '🇨🇱', name: 'Chile' },
-  { code: '🇹🇷', name: 'Turkey' },
-  { code: '🇬🇷', name: 'Greece' },
-  { code: '🇮🇪', name: 'Ireland' },
-  { code: '🇲🇨', name: 'Monaco' },
-  { code: '🇧🇭', name: 'Bahrain' },
-  { code: '🇦🇿', name: 'Azerbaijan' },
-  { code: '🇲🇾', name: 'Malaysia' },
-  { code: '🇹🇭', name: 'Thailand' },
-  { code: '🇺🇾', name: 'Uruguay' },
-  { code: '🇵🇪', name: 'Peru' },
-  { code: '🇨🇴', name: 'Colombia' },
-  { code: '🇻🇳', name: 'Vietnam' },
-  { code: '🇮🇩', name: 'Indonesia' },
+  { code: "🇦🇺", name: "Australia",     search: "australia" },
+  { code: "🇺🇸", name: "United States", search: "united states usa america" },
+  { code: "🇬🇧", name: "United Kingdom",search: "united kingdom uk britain england" },
+  { code: "🇩🇪", name: "Germany",       search: "germany" },
+  { code: "🇫🇷", name: "France",        search: "france" },
+  { code: "🇮🇹", name: "Italy",         search: "italy" },
+  { code: "🇯🇵", name: "Japan",         search: "japan" },
+  { code: "🇨🇦", name: "Canada",        search: "canada" },
+  { code: "🇧🇷", name: "Brazil",        search: "brazil" },
+  { code: "🇲🇽", name: "Mexico",        search: "mexico" },
+  { code: "🇪🇸", name: "Spain",         search: "spain" },
+  { code: "🇳🇱", name: "Netherlands",   search: "netherlands holland" },
+  { code: "🇧🇪", name: "Belgium",       search: "belgium" },
+  { code: "🇦🇹", name: "Austria",       search: "austria" },
+  { code: "🇵🇹", name: "Portugal",      search: "portugal" },
+  { code: "🇨🇭", name: "Switzerland",   search: "switzerland" },
+  { code: "🇸🇪", name: "Sweden",        search: "sweden" },
+  { code: "🇳🇴", name: "Norway",        search: "norway" },
+  { code: "🇩🇰", name: "Denmark",       search: "denmark" },
+  { code: "🇫🇮", name: "Finland",       search: "finland" },
+  { code: "🇵🇱", name: "Poland",        search: "poland" },
+  { code: "🇨🇿", name: "Czech Republic",search: "czech republic czechia" },
+  { code: "🇭🇺", name: "Hungary",       search: "hungary" },
+  { code: "🇷🇴", name: "Romania",       search: "romania" },
+  { code: "🇷🇺", name: "Russia",        search: "russia" },
+  { code: "🇨🇳", name: "China",         search: "china" },
+  { code: "🇰🇷", name: "South Korea",   search: "south korea" },
+  { code: "🇮🇳", name: "India",         search: "india" },
+  { code: "🇿🇦", name: "South Africa",  search: "south africa" },
+  { code: "🇦🇪", name: "UAE",           search: "uae united arab emirates dubai" },
+  { code: "🇸🇦", name: "Saudi Arabia",  search: "saudi arabia" },
+  { code: "🇸🇬", name: "Singapore",     search: "singapore" },
+  { code: "🇳🇿", name: "New Zealand",   search: "new zealand" },
+  { code: "🇦🇷", name: "Argentina",     search: "argentina" },
+  { code: "🇨🇱", name: "Chile",         search: "chile" },
+  { code: "🇹🇷", name: "Turkey",        search: "turkey" },
+  { code: "🇬🇷", name: "Greece",        search: "greece" },
+  { code: "🇮🇪", name: "Ireland",       search: "ireland" },
+  { code: "🇲🇨", name: "Monaco",        search: "monaco" },
+  { code: "🇧🇭", name: "Bahrain",       search: "bahrain" },
+  { code: "🇦🇿", name: "Azerbaijan",    search: "azerbaijan baku" },
+  { code: "🇲🇾", name: "Malaysia",      search: "malaysia" },
+  { code: "🇹🇭", name: "Thailand",      search: "thailand" },
+  { code: "🇺🇾", name: "Uruguay",       search: "uruguay" },
+  { code: "🇵🇪", name: "Peru",          search: "peru" },
+  { code: "🇨🇴", name: "Colombia",      search: "colombia" },
+  { code: "🇻🇳", name: "Vietnam",       search: "vietnam" },
+  { code: "🇮🇩", name: "Indonesia",     search: "indonesia" },
 ];
 
 // ── CSV helpers ─────────────────────────────────────────────────
@@ -253,7 +254,7 @@ function buildDiscordText() {
   const link = subsessionId
     ? `https://members.iracing.com/membersite/member/EventResult.do?&subsessionid=${subsessionId}`
     : 'https://members.iracing.com/membersite/member/EventResult.do';
-  return `**${carName} Round ${roundNumber} - Official ${typeLabel} @ ${trackName} ${countryFlag} **\n:point_right: [Click here to view full classifications](${link}) :bar_chart:`;
+  return `**${carName} Round ${roundNumber} - Official ${typeLabel} @ ${trackName} ${selectedFlag.code} **\n:point_right: [Click here to view full classifications](${link}) :bar_chart:`;
 }
 
 // ── Render ──────────────────────────────────────────────────────
@@ -309,6 +310,53 @@ function copyToClipboard() {
   }).catch(err => alert('Export failed: ' + err.message));
 }
 
+// ── Flag dropdown ───────────────────────────────────────────────
+function renderFlagDropdown() {
+  document.getElementById('flag-trigger-code').textContent = selectedFlag.code;
+  document.getElementById('flag-trigger-name').textContent = selectedFlag.name;
+  const panel = document.getElementById('flag-panel');
+  if (flagDropdownOpen) {
+    panel.classList.add('open');
+    renderFlagList();
+  } else {
+    panel.classList.remove('open');
+  }
+}
+
+function renderFlagList() {
+  const list     = document.getElementById('flag-list');
+  const query    = flagSearch.toLowerCase();
+  const filtered = query
+    ? FLAG_EMOJIS.filter(f => f.name.toLowerCase().includes(query) || f.search.includes(query))
+    : FLAG_EMOJIS;
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="flag-no-results">No results</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(f => `
+    <div class="flag-item${f.code === selectedFlag.code ? ' flag-item--active' : ''}" data-idx="${FLAG_EMOJIS.indexOf(f)}" role="option">
+      <span class="flag-item__code">${f.code}</span>
+      <span>${f.name}</span>
+    </div>`).join('');
+
+  list.querySelectorAll('.flag-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.stopPropagation();
+      const flag = FLAG_EMOJIS[parseInt(item.dataset.idx, 10)];
+      if (flag) {
+        selectedFlag     = flag;
+        flagDropdownOpen = false;
+        flagSearch       = '';
+        document.getElementById('flag-search').value = '';
+        renderFlagDropdown();
+        render();
+      }
+    });
+  });
+}
+
 // ── Init ────────────────────────────────────────────────────────
 (function init() {
   document.getElementById('g-logo').src    = logoDataURL;
@@ -339,18 +387,37 @@ function copyToClipboard() {
     render();
   });
 
-  // Populate flag select
-  const flagSel = document.getElementById('country-flag');
-  FLAG_EMOJIS.forEach((f, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = `${f.code}  ${f.name}`;
-    if (f.code === countryFlag) opt.selected = true;
-    flagSel.appendChild(opt);
+  // Flag dropdown
+  selectedFlag = FLAG_EMOJIS[0];
+  renderFlagDropdown();
+
+  const flagDropdown = document.getElementById('flag-dropdown');
+  const flagTrigger  = document.getElementById('flag-trigger');
+  const flagSearchEl = document.getElementById('flag-search');
+
+  flagTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    flagDropdownOpen = !flagDropdownOpen;
+    renderFlagDropdown();
+    if (flagDropdownOpen) flagSearchEl.focus();
+  });
+
+  flagSearchEl.addEventListener('click', e => e.stopPropagation());
+
+  flagSearchEl.addEventListener('input', e => {
+    flagSearch = e.target.value;
+    renderFlagList();
+  });
+
+  document.addEventListener('click', e => {
+    if (flagDropdownOpen && !flagDropdown.contains(e.target)) {
+      flagDropdownOpen = false;
+      renderFlagDropdown();
+    }
   });
 
   flagSel.addEventListener('change', e => {
-    countryFlag = FLAG_EMOJIS[parseInt(e.target.value, 10)].code;
+    selectedFlag.code = FLAG_EMOJIS[parseInt(e.target.value, 10)].code;
     render();
   });
 

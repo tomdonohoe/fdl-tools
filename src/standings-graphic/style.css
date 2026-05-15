@@ -412,6 +412,24 @@ body {
 .g-footer__logo:first-child { height: 20px; }
 .g-footer__logo:last-child  { height: 35px; }
 
+/* ── Discord text output ──────────────────────── */
+.discord-textarea {
+  width: 100%;
+  background: #0e0e0e;
+  border: 1px solid #2c2c2c;
+  border-radius: 6px;
+  color: #cccccc;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  padding: 12px;
+  resize: none;
+  outline: none;
+  min-height: 80px;
+}
+
+.export-btn.success { background: #a3ff63; border-color: #a3ff63; color: #0a0a0a; }
+
 /* ── Responsive ───────────────────────────────── */
 @media (max-width: 520px) {
   .row-round-track { grid-template-columns: 1fr; }
